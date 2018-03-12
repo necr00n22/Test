@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
         OnCounterCreatedListener{
 
-    private FragmentManager mFragmentManager;
+    private android.support.v4.app.FragmentManager mFragmentManager;
 
     @BindView(R.id.fab) FloatingActionButton fab;
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements
 
         setTitle(getString(R.string.app_name));
 
-        mFragmentManager = getFragmentManager();
+        mFragmentManager = getSupportFragmentManager();
         fab.setOnClickListener(this);
     }
 

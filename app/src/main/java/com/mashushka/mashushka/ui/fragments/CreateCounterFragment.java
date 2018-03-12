@@ -1,10 +1,8 @@
 package com.mashushka.mashushka.ui.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.text.Editable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.mashushka.mashushka.R;
-import com.mashushka.mashushka.data.Counter;
-import com.mashushka.mashushka.database.DB;
+import com.mashushka.mashushka.data.entity.CounterEntity;
+import com.mashushka.mashushka.database.DataRepository;
 import com.mashushka.mashushka.ui.listeners.OnCounterCreatedListener;
 
 import java.util.Date;
@@ -55,11 +53,9 @@ public class CreateCounterFragment extends Fragment {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DB db = new DB(getActivity());
                 Date date = new Date();
-                Counter counter = new Counter(title.getText().toString(), date.getTime(), date.getTime(), 0);
-                db.insertData(counter.createContentValues(), DB.TABLE_COUNTERS);
-                if (listener != null) listener.onCounterCreated(counter);
+                CounterEntity counter = new CounterEntity(title.getText().toString(), date.getTime(), date.getTime(), 0);
+                DataRepository.getInstance(getActivity()).insertSingleCounter(counter);
             }
         });
         return v;

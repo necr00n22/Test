@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.mashushka.mashushka.R;
 import com.mashushka.mashushka.data.Counter;
+import com.mashushka.mashushka.data.entity.CounterEntity;
 import com.mashushka.mashushka.ui.holders.base.BaseViewHolder;
 
 import java.text.SimpleDateFormat;
@@ -19,7 +20,7 @@ import butterknife.BindView;
  * Created by Mikhail Li (Jiub) on 03.02.2018.
  */
 
-public class CounterHolder extends BaseViewHolder<Counter> {
+public class CounterHolder extends BaseViewHolder<CounterEntity> {
 
     @BindView(R.id.icon) ImageView icon;
     @BindView(R.id.counter) TextView counter;
@@ -30,7 +31,7 @@ public class CounterHolder extends BaseViewHolder<Counter> {
     }
 
     @Override
-    public void bind(Counter data) {
+    public void bind(CounterEntity data) {
         if(title != null)
         title.setText(data.getTitle());
 

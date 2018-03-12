@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.mashushka.mashushka.R;
 import com.mashushka.mashushka.data.Counter;
+import com.mashushka.mashushka.data.entity.CounterEntity;
 import com.mashushka.mashushka.ui.holders.CounterHolder;
 import com.mashushka.mashushka.ui.holders.base.BaseViewHolder;
 
@@ -19,9 +20,9 @@ import java.util.List;
 public class CountersListAdapter extends RecyclerView.Adapter<CounterHolder> {
 
     private Context mContext;
-    private List<Counter> counters;
+    private List<CounterEntity> counters;
 
-    public CountersListAdapter(Context context, List<Counter> counters) {
+    public CountersListAdapter(Context context, List<CounterEntity> counters) {
 
         mContext = context;
         this.counters = counters;
@@ -30,6 +31,11 @@ public class CountersListAdapter extends RecyclerView.Adapter<CounterHolder> {
     @Override
     public CounterHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new CounterHolder(LayoutInflater.from(mContext).inflate(R.layout.list_item_counter, parent, false));
+    }
+
+    public void setCountersList(List<CounterEntity> data) {
+        this.counters = data;
+        this.notifyDataSetChanged();
     }
 
     @Override

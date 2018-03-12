@@ -1,6 +1,8 @@
 package com.mashushka.mashushka.ui.fragments;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,11 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mashushka.mashushka.R;
+import com.mashushka.mashushka.data.entity.CounterEntity;
 import com.mashushka.mashushka.database.DB;
 import com.mashushka.mashushka.ui.adapters.CountersListAdapter;
+import com.mashushka.mashushka.viewmodel.CounterViewModel;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +27,11 @@ import butterknife.ButterKnife;
 public class ListFragment extends Fragment {
 
     @BindView(android.R.id.list) RecyclerView list;
+
+    CountersListAdapter adapter = null;
+    List<CounterEntity> data = new ArrayList<>();
+
+    private CounterViewModel mCounterViewModel;
 
     public ListFragment() {
     }
@@ -32,6 +41,27 @@ public class ListFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mCounterViewModel = ViewModelProviders.of(this).get(CounterViewModel.class);
+        mCounterViewModel.initObservers(getContext(), this);
+        mCounterViewModel.getCounters().observe(this, new Observer<List<CounterEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<CounterEntity> entities) {
+                data = entities;
+                if(adapter == null) {
+                    adapter = new CountersListAdapter(getActivity(), data);
+                    list.setAdapter(adapter);
+                }
+
+                adapter.setCountersList(data);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override
@@ -50,30 +80,9 @@ public class ListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        DB db = new DB(getActivity());
-
         LinearLayoutManager llm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(llm);
-
-        final CountersListAdapter adapter = new CountersListAdapter(getActivity(), db.getCounters());
         list.setAdapter(adapter);
-
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-
-            }
-        };
-
-        timer.schedule(timerTask, 0, 1000);
     }
 
     public void onButtonPressed(Uri uri) {
