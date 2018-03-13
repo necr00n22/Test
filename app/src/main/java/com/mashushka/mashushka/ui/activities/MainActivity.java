@@ -17,13 +17,9 @@ import com.mashushka.mashushka.ui.listeners.OnCounterCreatedListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements
-        View.OnClickListener,
-        OnCounterCreatedListener{
+public class MainActivity extends AppCompatActivity implements OnCounterCreatedListener, ListFragment.CreateCounterListener {
 
     private android.support.v4.app.FragmentManager mFragmentManager;
-
-    @BindView(R.id.fab) FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,29 +33,29 @@ public class MainActivity extends AppCompatActivity implements
         setTitle(getString(R.string.app_name));
 
         mFragmentManager = getSupportFragmentManager();
-        fab.setOnClickListener(this);
+        mFragmentManager.beginTransaction()
+                .replace(R.id.container, ListFragment.newInstance(this))
+                .commit();
     }
-
-
     @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.fab:
-                createCounter();
-                break;
-        }
-    }
-
-    private void createCounter() {
+    public void createCounter() {
         mFragmentManager.beginTransaction()
         .replace(R.id.container, CreateCounterFragment.newInstance(this))
+                .addToBackStack(null)
         .commit();
     }
 
     @Override
     public void onCounterCreated(Counter counter) {
-        mFragmentManager.beginTransaction()
-                .replace(R.id.container, ListFragment.newInstance())
-                .commit();
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0 ){
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

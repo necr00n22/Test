@@ -56,6 +56,7 @@ public class CreateCounterFragment extends Fragment {
                 Date date = new Date();
                 CounterEntity counter = new CounterEntity(title.getText().toString(), date.getTime(), date.getTime(), 0);
                 DataRepository.getInstance(getActivity()).insertSingleCounter(counter);
+                listener.onCounterCreated(null);
             }
         });
         return v;

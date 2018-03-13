@@ -51,12 +51,12 @@ public class CounterHolder extends BaseViewHolder<CounterEntity> {
         long days;
 
         days = time / (3600 * 24);
-        hours = (time - (days * (3600 * 24))) / (3600);
-        minutes = (time - (days * (3600 * 24)) - (hours * 3600)) / (60);
-        seconds =  (time - days * (3600 * 24) -  hours * 3600 - minutes  * 60);
+//        hours = (time - (days * (3600 * 24))) / (3600);
+//        minutes = (time - (days * (3600 * 24)) - (hours * 3600)) / (60);
+//        seconds =  (time - days * (3600 * 24) -  hours * 3600 - minutes  * 60);
 
         createDate.setText(format.format(createTime));
-        counter.setText(days + " " + hours + " " + minutes + " " + seconds);
+        counter.setText(String.valueOf(days)/* + " " + hours + " " + minutes + " " + seconds*/);
     }
 }
 

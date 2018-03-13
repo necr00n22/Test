@@ -1,5 +1,6 @@
 package com.mashushka.mashushka.ui.fragments;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -24,9 +25,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements View.OnClickListener {
+
+    private CreateCounterListener listener;
+
+    public interface CreateCounterListener {
+        void createCounter();
+    }
 
     @BindView(android.R.id.list) RecyclerView list;
+    @BindView(R.id.fab) FloatingActionButton fab;
 
     CountersListAdapter adapter = null;
     List<CounterEntity> data = new ArrayList<>();
@@ -36,8 +44,9 @@ public class ListFragment extends Fragment {
     public ListFragment() {
     }
 
-    public static ListFragment newInstance() {
+    public static ListFragment newInstance(CreateCounterListener listener) {
         ListFragment fragment = new ListFragment();
+        fragment.listener = listener;
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -62,6 +71,17 @@ public class ListFragment extends Fragment {
             }
         });
 
+        fab.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.fab:
+                listener.createCounter();
+                break;
+        }
     }
 
     @Override
