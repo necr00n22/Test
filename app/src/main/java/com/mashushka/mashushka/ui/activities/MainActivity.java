@@ -1,12 +1,10 @@
 package com.mashushka.mashushka.ui.activities;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.mashushka.mashushka.R;
 import com.mashushka.mashushka.data.Counter;
@@ -14,12 +12,26 @@ import com.mashushka.mashushka.ui.fragments.CreateCounterFragment;
 import com.mashushka.mashushka.ui.fragments.ListFragment;
 import com.mashushka.mashushka.ui.listeners.OnCounterCreatedListener;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements OnCounterCreatedListener, ListFragment.CreateCounterListener {
 
     private android.support.v4.app.FragmentManager mFragmentManager;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.add_counter, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+                break;
+        }
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
