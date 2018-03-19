@@ -4,12 +4,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mashushka.mashushka.R;
 import com.mashushka.mashushka.data.Counter;
 import com.mashushka.mashushka.data.entity.CounterEntity;
 import com.mashushka.mashushka.ui.holders.base.BaseViewHolder;
+import com.mashushka.mashushka.ui.listeners.CounterOpener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,14 +22,17 @@ import butterknife.BindView;
  * Created by Mikhail Li (Jiub) on 03.02.2018.
  */
 
-public class CounterHolder extends BaseViewHolder<CounterEntity> {
+public class CounterHolder extends BaseViewHolder<CounterEntity>{
 
+    private final CounterOpener listener;
+    @BindView(R.id.wrapper) RelativeLayout wrapper;
     @BindView(R.id.icon) ImageView icon;
     @BindView(R.id.counter) TextView counter;
     @BindView(R.id.create_date) TextView createDate;
 
-    public CounterHolder (View itemView) {
+    public CounterHolder (View itemView, CounterOpener listener) {
         super(itemView);
+        this.listener = listener;
     }
 
     @Override
@@ -57,6 +62,13 @@ public class CounterHolder extends BaseViewHolder<CounterEntity> {
 
         createDate.setText(format.format(createTime));
         counter.setText(String.valueOf(days)/* + " " + hours + " " + minutes + " " + seconds*/);
+
+        wrapper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.showCounter(data.id);
+            }
+        });
     }
 }
 

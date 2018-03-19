@@ -21,7 +21,7 @@ public interface CounterDao {
     LiveData<List<CounterEntity>> getCounters();
 
     @Query("SELECT * FROM counters WHERE id = :counterId")
-    LiveData<List<CounterEntity>> getCounters(long counterId);
+    LiveData<CounterEntity> getCounterById(long counterId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCounters(List<CounterEntity> entities);

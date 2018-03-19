@@ -50,6 +50,10 @@ public class DataRepository {
         return mObservableProducts;
     }
 
+    public LiveData<CounterEntity> getCounterById(long id) {
+        return mDatabase.counterDao().getCounterById(id);
+    }
+
     public void insertCounters(List<CounterEntity> entities) {
         Executors.newSingleThreadExecutor().execute(() -> {
             mDatabase.counterDao().insertCounters(entities);

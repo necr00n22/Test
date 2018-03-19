@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 
 import com.mashushka.mashushka.R;
 import com.mashushka.mashushka.data.entity.CounterEntity;
-import com.mashushka.mashushka.database.DB;
 import com.mashushka.mashushka.ui.adapters.CountersListAdapter;
-import com.mashushka.mashushka.viewmodel.CounterViewModel;
+import com.mashushka.mashushka.ui.listeners.CounterOpener;
+import com.mashushka.mashushka.viewmodel.CountersListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 
 public class ListFragment extends Fragment implements View.OnClickListener {
 
+    private CounterOpener opener;
     private CreateCounterListener listener;
 
     public interface CreateCounterListener {
@@ -39,13 +40,15 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     CountersListAdapter adapter = null;
     List<CounterEntity> data = new ArrayList<>();
 
-    private CounterViewModel mCounterViewModel;
+    private CountersListViewModel mCountersListViewModel;
 
     public ListFragment() {
     }
 
-    public static ListFragment newInstance(CreateCounterListener listener) {
+    public static ListFragment newInstance(CreateCounterListener listener, CounterOpener opener) {
+
         ListFragment fragment = new ListFragment();
+        fragment.opener = opener;
         fragment.listener = listener;
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -55,14 +58,14 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mCounterViewModel = ViewModelProviders.of(this).get(CounterViewModel.class);
-        mCounterViewModel.initObservers(getContext(), this);
-        mCounterViewModel.getCounters().observe(this, new Observer<List<CounterEntity>>() {
+        mCountersListViewModel = ViewModelProviders.of(this).get(CountersListViewModel.class);
+        mCountersListViewModel.initObservers();
+        mCountersListViewModel.getCounters().observe(this, new Observer<List<CounterEntity>>() {
             @Override
             public void onChanged(@Nullable List<CounterEntity> entities) {
                 data = entities;
                 if(adapter == null) {
-                    adapter = new CountersListAdapter(getActivity(), data);
+                    adapter = new CountersListAdapter(getActivity(), data, opener);
                     list.setAdapter(adapter);
                 }
 

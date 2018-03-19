@@ -8,13 +8,18 @@ import android.view.MenuItem;
 
 import com.mashushka.mashushka.R;
 import com.mashushka.mashushka.data.Counter;
+import com.mashushka.mashushka.ui.fragments.CounterFragment;
 import com.mashushka.mashushka.ui.fragments.CreateCounterFragment;
 import com.mashushka.mashushka.ui.fragments.ListFragment;
+import com.mashushka.mashushka.ui.listeners.CounterOpener;
 import com.mashushka.mashushka.ui.listeners.OnCounterCreatedListener;
 
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements OnCounterCreatedListener, ListFragment.CreateCounterListener {
+public class MainActivity extends AppCompatActivity implements
+        OnCounterCreatedListener,
+        ListFragment.CreateCounterListener,
+        CounterOpener{
 
     private android.support.v4.app.FragmentManager mFragmentManager;
 
@@ -46,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements OnCounterCreatedL
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction()
-                .replace(R.id.container, ListFragment.newInstance(this))
+                .replace(R.id.container, ListFragment.newInstance(this, this))
                 .commit();
     }
     @Override
@@ -69,5 +74,13 @@ public class MainActivity extends AppCompatActivity implements OnCounterCreatedL
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void showCounter(long id) {
+        mFragmentManager.beginTransaction()
+                .replace(R.id.container, CounterFragment.newInstance(id))
+                .addToBackStack(null)
+                .commit();
     }
 }

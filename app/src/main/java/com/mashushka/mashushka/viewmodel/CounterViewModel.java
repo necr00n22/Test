@@ -1,29 +1,29 @@
 package com.mashushka.mashushka.viewmodel;
 
-import android.arch.lifecycle.LifecycleOwner;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 
 import com.mashushka.mashushka.data.entity.CounterEntity;
 import com.mashushka.mashushka.database.DataRepository;
 
-import java.util.List;
-
 /**
- * Created by Михаил on 12.03.2018.
+ * Created by Mikhail Li (Jiub) on 19.03.2018.
  */
 
-public class CounterViewModel extends ViewModel {
+public class CounterViewModel extends AndroidViewModel {
 
-    private LiveData<List<CounterEntity>> counters;
-    public LiveData<List<CounterEntity>> getCounters() {
-        return counters;
+    private Context mContext;
+
+    public CounterViewModel(@NonNull Application application) {
+        super(application);
+        this.mContext = application;
     }
 
-    public void initObservers(Context context, LifecycleOwner owner) {
-        counters = DataRepository.getInstance(context).getCounters();
+    public LiveData<CounterEntity> getCounterById(long id) {
+        return DataRepository.getInstance(mContext).getCounterById(id);
     }
+
 }
