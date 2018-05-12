@@ -11,7 +11,6 @@ import android.arch.persistence.room.PrimaryKey;
 public class CounterEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
-
     @ColumnInfo(name = "title")
     String title;
     @ColumnInfo(name = "startDate")

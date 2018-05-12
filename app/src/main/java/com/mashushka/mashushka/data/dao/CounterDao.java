@@ -17,7 +17,7 @@ import java.util.List;
 @Dao
 public interface CounterDao {
 
-    @Query("SELECT * FROM counters")
+    @Query("SELECT * FROM counters ORDER BY id DESC")
     LiveData<List<CounterEntity>> getCounters();
 
     @Query("SELECT * FROM counters WHERE id = :counterId")
@@ -31,5 +31,8 @@ public interface CounterDao {
 
     @Update
     void updateCounter(CounterEntity counter);
+
+    @Query("DELETE FROM counters WHERE id = :counterId")
+    void deleteCounter(long counterId);
 
 }

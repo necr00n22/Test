@@ -1,21 +1,25 @@
 package com.mashushka.mashushka.ui.fragments;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mashushka.mashushka.R;
 import com.mashushka.mashushka.data.entity.CounterEntity;
 import com.mashushka.mashushka.ui.adapters.CountersListAdapter;
+import com.mashushka.mashushka.ui.dialogs.CreateCounterBottomSheetDialog;
 import com.mashushka.mashushka.ui.listeners.CounterOpener;
 import com.mashushka.mashushka.viewmodel.CountersListViewModel;
 
@@ -25,17 +29,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListFragment extends Fragment implements View.OnClickListener {
+public class ListFragment extends Fragment {
 
     private CounterOpener opener;
-    private CreateCounterListener listener;
-
-    public interface CreateCounterListener {
-        void createCounter();
-    }
 
     @BindView(android.R.id.list) RecyclerView list;
-    @BindView(R.id.fab) FloatingActionButton fab;
 
     CountersListAdapter adapter = null;
     List<CounterEntity> data = new ArrayList<>();
@@ -45,14 +43,35 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     public ListFragment() {
     }
 
-    public static ListFragment newInstance(CreateCounterListener listener, CounterOpener opener) {
-
+    public static ListFragment newInstance() {
         ListFragment fragment = new ListFragment();
-        fragment.opener = opener;
-        fragment.listener = listener;
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        if(context instanceof CounterOpener)
+            opener = (CounterOpener) context;
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.add_counter, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+                showCreateCounterDialog();
+                return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -73,23 +92,12 @@ public class ListFragment extends Fragment implements View.OnClickListener {
                 adapter.notifyDataSetChanged();
             }
         });
-
-        fab.setOnClickListener(this);
-
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.fab:
-                listener.createCounter();
-                break;
-        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -110,6 +118,11 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
     public void onButtonPressed(Uri uri) {
 
+    }
+
+    private void showCreateCounterDialog() {
+        CreateCounterBottomSheetDialog dialog = new CreateCounterBottomSheetDialog();
+        dialog.show(getChildFragmentManager(), CreateCounterBottomSheetDialog.TAG);
     }
 
 }

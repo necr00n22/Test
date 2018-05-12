@@ -26,7 +26,6 @@ public class CounterHolder extends BaseViewHolder<CounterEntity>{
 
     private final CounterOpener listener;
     @BindView(R.id.wrapper) RelativeLayout wrapper;
-    @BindView(R.id.icon) ImageView icon;
     @BindView(R.id.counter) TextView counter;
     @BindView(R.id.create_date) TextView createDate;
 

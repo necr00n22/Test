@@ -1,25 +1,30 @@
 package com.mashushka.mashushka.ui.fragments;
 
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mashushka.mashushka.R;
 import com.mashushka.mashushka.data.entity.CounterEntity;
-import com.mashushka.mashushka.ui.listeners.CounterOpener;
+import com.mashushka.mashushka.database.DataRepository;
+import com.mashushka.mashushka.ui.CircleProgressBar;
 import com.mashushka.mashushka.viewmodel.CounterViewModel;
-import com.mashushka.mashushka.viewmodel.CountersListViewModel;
 
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,9 +41,15 @@ public class CounterFragment extends Fragment {
     @BindView(R.id.days) TextView days;
     @BindView(R.id.hours_mins_secs) TextView hoursMinsSecs;
     @BindView(R.id.description) TextView description;
+    @BindView(R.id.custom_progressBar)
+    CircleProgressBar circleProgressBar;
 
     private CounterViewModel mCountersListViewModel;
-    private long id;
+    private long id = -1;
+    private TimerTask task;
+    private Timer timer;
+    private long previousProgress = 0;
+    private CounterEntity counter;
 
     public CounterFragment() {
         // Required empty public constructor
@@ -54,6 +65,78 @@ public class CounterFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.counter_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.delete:
+                showDeleteCounterDialog();
+                return true;
+            case R.id.reset:
+                showResetCounterDialog();
+                return true;
+        }
+
+        return false;
+    }
+
+    private void showDeleteCounterDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(true);
+        builder.setMessage(R.string.dialog_delete_description);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deleteCounter();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void showResetCounterDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(true);
+        builder.setMessage(R.string.dialog_reset_description);
+        builder.setPositiveButton(R.string.reset, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                resetCounter();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void deleteCounter() {
+        if(id != -1)
+            DataRepository.getInstance(getActivity()).deleteSingleCounter(id);
+        getActivity().onBackPressed();
+    }
+
+    private void resetCounter() {
+        if(id != -1){
+            counter.setCreateDate(new Date().getTime());
+            DataRepository.getInstance(getActivity()).updateSingleCounter(counter);
+        }
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Bundle bundle = getArguments();
@@ -63,30 +146,44 @@ public class CounterFragment extends Fragment {
         mCountersListViewModel.getCounterById(id).observe(this, new Observer<CounterEntity>() {
             @Override
             public void onChanged(@Nullable CounterEntity counterEntity) {
-
-                Date timePassed = new Date();
-                timePassed.setTime(new Date().getTime() - counterEntity.getCreateDate());
-
-                long time = timePassed.getTime() / 1000;
-
-                long d = time / (3600 * 24);
-                long h = (time - (d * (3600 * 24))) / (3600);
-                long m = (time - (d * (3600 * 24)) - (h * 3600)) / (60);
-                long s =  (time - d * (3600 * 24) -  h * 3600 - m  * 60);
-
-                days.setText(d + getString(R.string.days));
-                hoursMinsSecs.setText(
-                        h + getString(R.string.hours) + " " +
-                        m + getString(R.string.minutes) + " " +
-                        s + getString(R.string.seconds));
-                description.setText(counterEntity.getTitle());
+                counter = counterEntity;
+                description.setText(counter.getTitle());
+                setTimer();
             }
         });
+    }
+
+    private void setTimer() {
+        Date timePassed = new Date();
+        timePassed.setTime(new Date().getTime() - counter.getCreateDate());
+
+        long time = timePassed.getTime() / 1000;
+
+        long d = time / (3600 * 24);
+        long h = (time - (d * (3600 * 24))) / (3600);
+        long m = (time - (d * (3600 * 24)) - (h * 3600)) / (60);
+        long s =  (time - d * (3600 * 24) -  h * 3600 - m  * 60);
+
+        days.setText(d + " " + getString(R.string.days));
+        hoursMinsSecs.setText(
+                timeFormat(h) + ":" +
+                        timeFormat(m) + ":" +
+                        timeFormat(s));
+        if(previousProgress != h * 60 + m) {
+            previousProgress = h * 60 + m;
+            circleProgressBar.setProgress(previousProgress);
+        }
+
+    }
+
+    private String timeFormat(long time) {
+        return String.valueOf(time).length() == 1 ? "0" + time : String.valueOf(time);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -97,4 +194,25 @@ public class CounterFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                setTimer();
+            }
+        };
+
+        timer = new Timer();
+        timer.schedule(task, 1000, 1000);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        timer.purge();
+        timer.cancel();
+        super.onPause();
+    }
 }

@@ -2,32 +2,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.mashushka.mashushka.ui.fragments.CounterFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/days"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"
-        android:textAlignment="center"
-        android:textColor="@color/blackText"
-        android:textSize="30sp" />
+    <RelativeLayout
+        android:id="@+id/rl_counter"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="false"
+        android:layout_margin="32dp">
 
-    <TextView
-        android:id="@+id/hours_mins_secs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/days"
-        android:padding="16dp"
-        android:textAlignment="center" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/days"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="false"
+                android:layout_centerInParent="false"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:textAlignment="center"
+                android:textColor="@color/blackText"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/hours_mins_secs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/days"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <com.mashushka.mashushka.ui.CircleProgressBar
+            android:id="@+id/custom_progressBar"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            app:progress="0"
+            app:max="1440"
+            app:min="0"
+            app:progressBarThickness="3dp" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hours_mins_secs"
+        android:layout_below="@+id/rl_counter"
         android:padding="16dp" />
 </RelativeLayout>

@@ -54,6 +54,12 @@ public class DataRepository {
         return mDatabase.counterDao().getCounterById(id);
     }
 
+    public void updateSingleCounter(CounterEntity entity) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            mDatabase.counterDao().updateCounter(entity);
+        });
+    }
+
     public void insertCounters(List<CounterEntity> entities) {
         Executors.newSingleThreadExecutor().execute(() -> {
             mDatabase.counterDao().insertCounters(entities);
@@ -63,6 +69,12 @@ public class DataRepository {
         Executors.newSingleThreadExecutor().execute(() -> {
             mDatabase.runInTransaction(() -> mDatabase.counterDao().insertSingleCounter(entity));
 
+        });
+    }
+
+    public void deleteSingleCounter(long id) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            mDatabase.counterDao().deleteCounter(id);
         });
     }
 }
