@@ -1,5 +1,6 @@
 package com.mashushka.mashushka.ui.activities;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void showCounter(long id) {
         mFragmentManager.beginTransaction()
+                .setCustomAnimations(R.animator.slide_in_right, R.animator.slide_in_left)
                 .replace(R.id.container, CounterFragment.newInstance(id))
                 .addToBackStack(null)
                 .commit();

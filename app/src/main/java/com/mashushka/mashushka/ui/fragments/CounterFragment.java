@@ -41,6 +41,8 @@ public class CounterFragment extends Fragment {
     @BindView(R.id.days) TextView days;
     @BindView(R.id.hours_mins_secs) TextView hoursMinsSecs;
     @BindView(R.id.description) TextView description;
+    @BindView(R.id.tv_reset_count) TextView tvResetCount;
+    @BindView(R.id.tv_reset_max) TextView tvResetMax;
     @BindView(R.id.custom_progressBar)
     CircleProgressBar circleProgressBar;
 
@@ -131,7 +133,10 @@ public class CounterFragment extends Fragment {
 
     private void resetCounter() {
         if(id != -1){
-            counter.setCreateDate(new Date().getTime());
+            if(counter.getMaxPeriod() < new Date().getTime() - counter.getStartDate())
+                counter.setMaxPeriod(new Date().getTime() - counter.getStartDate());
+            counter.setStartDate(new Date().getTime());
+            counter.setCounter(counter.getCounter() + 1);
             DataRepository.getInstance(getActivity()).updateSingleCounter(counter);
         }
     }
@@ -148,6 +153,8 @@ public class CounterFragment extends Fragment {
             public void onChanged(@Nullable CounterEntity counterEntity) {
                 counter = counterEntity;
                 description.setText(counter.getTitle());
+                tvResetCount.setText(String.valueOf(counter.getCounter()));
+                tvResetMax.setText(convertLongToTime(counter.getMaxPeriod()));
                 setTimer();
             }
         });
@@ -155,7 +162,7 @@ public class CounterFragment extends Fragment {
 
     private void setTimer() {
         Date timePassed = new Date();
-        timePassed.setTime(new Date().getTime() - counter.getCreateDate());
+        timePassed.setTime(new Date().getTime() - counter.getStartDate());
 
         long time = timePassed.getTime() / 1000;
 
@@ -174,6 +181,22 @@ public class CounterFragment extends Fragment {
             circleProgressBar.setProgress(previousProgress);
         }
 
+    }
+
+    private String convertLongToTime(long maxPeriod) {
+
+        long time = maxPeriod / 1000;
+
+        long d = time / (3600 * 24);
+        long h = (time - (d * (3600 * 24))) / (3600);
+        long m = (time - (d * (3600 * 24)) - (h * 3600)) / (60);
+        long s =  (time - d * (3600 * 24) -  h * 3600 - m  * 60);
+
+
+        return d + " " + getString(R.string.days) + " " +
+                timeFormat(h) + ":" +
+                timeFormat(m) + ":" +
+                timeFormat(s);
     }
 
     private String timeFormat(long time) {

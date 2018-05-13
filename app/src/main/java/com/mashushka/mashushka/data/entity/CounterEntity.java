@@ -19,12 +19,15 @@ public class CounterEntity {
     long createDate;
     @ColumnInfo(name = "counter")
     long counter;
+    @ColumnInfo(name = "maxPeriod")
+    long maxPeriod;
 
-    public CounterEntity (String title, long startDate, long createDate, long counter) {
+    public CounterEntity (String title, long startDate, long createDate, long counter, long maxPeriod) {
         this.title = title;
         this.startDate = startDate;
         this.createDate = createDate;
         this.counter = counter;
+        this.maxPeriod = maxPeriod;
     }
 
     public String getTitle() {
@@ -57,5 +60,13 @@ public class CounterEntity {
 
     public void setCounter(long counter) {
         this.counter = counter;
+    }
+
+    public long getMaxPeriod() {
+        return maxPeriod;
+    }
+
+    public void setMaxPeriod(long maxPeriod) {
+        this.maxPeriod = maxPeriod;
     }
 }

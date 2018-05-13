@@ -18,7 +18,7 @@ import com.mashushka.mashushka.data.entity.CounterEntity;
  * Created by Михаил on 12.03.2018.
  */
 
-@Database(entities = {CounterEntity.class}, version = 2)
+@Database(entities = {CounterEntity.class}, version = 3)
 @TypeConverters(Converters.class)
 public abstract class RoomDB extends RoomDatabase {
 

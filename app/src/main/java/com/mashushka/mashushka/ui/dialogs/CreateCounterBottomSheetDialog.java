@@ -51,7 +51,7 @@ public class CreateCounterBottomSheetDialog extends BottomSheetDialogFragment {
 
     private void createCounter(String title) {
         Date date = new Date();
-        CounterEntity counter = new CounterEntity(title, date.getTime(), date.getTime(), 0);
+        CounterEntity counter = new CounterEntity(title, date.getTime(), date.getTime(), 0, 0);
         DataRepository.getInstance(getActivity()).insertSingleCounter(counter);
         dismiss();
     }
