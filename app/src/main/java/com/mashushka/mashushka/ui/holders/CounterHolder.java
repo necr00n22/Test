@@ -28,6 +28,7 @@ public class CounterHolder extends BaseViewHolder<CounterEntity>{
     @BindView(R.id.wrapper) RelativeLayout wrapper;
     @BindView(R.id.counter) TextView counter;
     @BindView(R.id.create_date) TextView createDate;
+    @BindView(R.id.tv_days_title) TextView daysTitle;
 
     public CounterHolder (View itemView, CounterOpener listener) {
         super(itemView);
@@ -42,7 +43,7 @@ public class CounterHolder extends BaseViewHolder<CounterEntity>{
         Date createTime = new Date();
         Date now = new Date();
         SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy");
-        createTime.setTime(data.getCreateDate());
+        createTime.setTime(data.getStartDate());
 
         Date timePassed = new Date();
         timePassed.setTime(now.getTime() - createTime.getTime());
@@ -61,6 +62,8 @@ public class CounterHolder extends BaseViewHolder<CounterEntity>{
 
         createDate.setText(format.format(createTime));
         counter.setText(String.valueOf(days)/* + " " + hours + " " + minutes + " " + seconds*/);
+
+        daysTitle.setText(daysTitle.getContext().getResources().getQuantityText(R.plurals.days, (int) days));
 
         wrapper.setOnClickListener(new View.OnClickListener() {
             @Override

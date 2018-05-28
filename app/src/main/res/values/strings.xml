@@ -4,8 +4,15 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <plurals name="days">
+        <item quantity="zero">Дней</item>
+        <item quantity="one">День</item>
+        <item quantity="two">Дня</item>
+        <item quantity="few">Дня</item>
+        <item quantity="many">Дней</item>
+        <item quantity="other">Дней</item>
+    </plurals>
 
-    <string name="days">Дней</string>
     <string name="hours">h</string>
     <string name="minutes">m</string>
     <string name="seconds">s</string>

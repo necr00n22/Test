@@ -171,7 +171,7 @@ public class CounterFragment extends Fragment {
         long m = (time - (d * (3600 * 24)) - (h * 3600)) / (60);
         long s =  (time - d * (3600 * 24) -  h * 3600 - m  * 60);
 
-        days.setText(d + " " + getString(R.string.days));
+        days.setText(d + " " + getResources().getQuantityString(R.plurals.days, (int) d));
         hoursMinsSecs.setText(
                 timeFormat(h) + ":" +
                         timeFormat(m) + ":" +
@@ -193,7 +193,7 @@ public class CounterFragment extends Fragment {
         long s =  (time - d * (3600 * 24) -  h * 3600 - m  * 60);
 
 
-        return d + " " + getString(R.string.days) + " " +
+        return d + " " + getResources().getQuantityString(R.plurals.days, (int) d) + " " +
                 timeFormat(h) + ":" +
                 timeFormat(m) + ":" +
                 timeFormat(s);

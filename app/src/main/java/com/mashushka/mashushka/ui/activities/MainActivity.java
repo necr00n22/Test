@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void showCounter(long id) {
         mFragmentManager.beginTransaction()
-                .setCustomAnimations(R.animator.slide_in_right, R.animator.slide_in_left)
+                .setCustomAnimations(R.animator.slide_in_right, R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right)
                 .replace(R.id.container, CounterFragment.newInstance(id))
                 .addToBackStack(null)
                 .commit();

@@ -4,30 +4,22 @@
 
     <scale
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:startOffset="70"
-        android:fromXScale="1.1"
+        android:fromXScale="0.9"
         android:toXScale="1.0"
-        android:fromYScale="1.1"
+        android:fromYScale="0.9"
         android:toYScale="1.0"
         android:pivotX="50%"
         android:pivotY="50%"
+        android:startOffset="70"
         android:duration="120">
     </scale>
 
     <alpha
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:startOffset="100"
+        android:startOffset="70"
         android:fromAlpha="0.0"
         android:toAlpha="1.0"
         android:duration="120">
     </alpha>
-
-    <!--<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:interpolator="@android:anim/accelerate_decelerate_interpolator"-->
-        <!--android:propertyName="alpha"-->
-        <!--android:valueType="floatType"-->
-        <!--android:valueFrom="0"-->
-        <!--android:valueTo="100"-->
-        <!--android:duration="300" />-->
 
 </set>
