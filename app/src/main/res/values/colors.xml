@@ -6,4 +6,12 @@
 
     <color name="whiteText">#ffffff</color>
     <color name="blackText">#000000</color>
+    <color name="divider">#EEEEEE</color>
+
+    <color name="counter_item_background">#FFF</color>
+    <color name="counter_item_background_pressed">#F5F5F5</color>
+    <color name="counter_item_background_focused">#F5F5F5</color>
+
+
+
 </resources>
