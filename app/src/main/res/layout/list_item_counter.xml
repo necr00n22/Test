@@ -53,8 +53,6 @@
             android:layout_centerHorizontal="false"
             android:layout_centerVertical="true"
             app:max="23"
-            app:min="0"
-            app:progress="0"
             app:progressBarThickness="1dp" />
 
         <LinearLayout

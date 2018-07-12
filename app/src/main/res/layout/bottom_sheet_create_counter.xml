@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="16dp">
 
     <EditText
@@ -15,13 +14,36 @@
         android:hint="@string/counter_title"
         android:inputType="textCapSentences|textMultiLine" />
 
+    <SeekBar
+        android:id="@+id/sb_days"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/et_title"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toLeftOf="@+id/textView"
+        android:max="90"
+        android:progress="21" />
+
+    <TextView
+        android:id="@+id/tv_days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/et_title"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp" />
+
     <Button
         android:id="@+id/btn_create"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/sb_days"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/create_counter" />
 
-</LinearLayout>
+</RelativeLayout>

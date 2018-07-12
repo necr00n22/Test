@@ -6,12 +6,19 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.mashushka.mashushka.R;
 import com.mashushka.mashushka.data.entity.CounterEntity;
 import com.mashushka.mashushka.database.DataRepository;
 
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +35,13 @@ public class CreateCounterBottomSheetDialog extends BottomSheetDialogFragment {
     Button btnCreate;
     @BindView(R.id.et_title)
     EditText etTitle;
+    @BindView(R.id.sb_days)
+    SeekBar sbDays;
+    @BindView(R.id.tv_days)
+    TextView tvDays;
+
+    int days;
+    String title;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -38,20 +52,46 @@ public class CreateCounterBottomSheetDialog extends BottomSheetDialogFragment {
 
         ButterKnife.bind(this, contentView);
 
+
+        days = 27;
+        tvDays.setText(String.valueOf(days));
+        sbDays.setProgress(days);
+
+        sbDays.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                tvDays.setText(String.valueOf(i));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                days = seekBar.getProgress();
+            }
+        });
+
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String title = etTitle.getText().toString();
-
+                title = etTitle.getText().toString();
                 if(!title.isEmpty())
-                    createCounter(title);
+                    createCounter();
             }
         });
     }
 
-    private void createCounter(String title) {
-        Date date = new Date();
-        CounterEntity counter = new CounterEntity(title, date.getTime(), date.getTime(), 0, 0);
+    private void createCounter() {
+        GregorianCalendar createDate = new GregorianCalendar();
+        createDate.setTime(new Date());
+        GregorianCalendar endDate = new GregorianCalendar();
+        endDate.setTime(new Date());
+        endDate.add(Calendar.HOUR, days * 24);
+
+        CounterEntity counter = new CounterEntity(title, createDate.getTimeInMillis(), endDate.getTimeInMillis());
         DataRepository.getInstance(getActivity()).insertSingleCounter(counter);
         dismiss();
     }

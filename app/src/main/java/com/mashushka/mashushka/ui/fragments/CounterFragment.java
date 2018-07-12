@@ -80,7 +80,7 @@ public class CounterFragment extends Fragment {
                 showDeleteCounterDialog();
                 return true;
             case R.id.reset:
-                showResetCounterDialog();
+//                showResetCounterDialog();
                 return true;
         }
 
@@ -106,24 +106,24 @@ public class CounterFragment extends Fragment {
         builder.show();
     }
 
-    private void showResetCounterDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setCancelable(true);
-        builder.setMessage(R.string.dialog_reset_description);
-        builder.setPositiveButton(R.string.reset, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                resetCounter();
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        builder.show();
-    }
+//    private void showResetCounterDialog() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setCancelable(true);
+//        builder.setMessage(R.string.dialog_reset_description);
+//        builder.setPositiveButton(R.string.reset, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                resetCounter();
+//            }
+//        });
+//        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//            }
+//        });
+//        builder.show();
+//    }
 
     private void deleteCounter() {
         if(id != -1)
@@ -131,15 +131,15 @@ public class CounterFragment extends Fragment {
         getActivity().onBackPressed();
     }
 
-    private void resetCounter() {
-        if(id != -1){
-            if(counter.getMaxPeriod() < new Date().getTime() - counter.getStartDate())
-                counter.setMaxPeriod(new Date().getTime() - counter.getStartDate());
-            counter.setStartDate(new Date().getTime());
-            counter.setCounter(counter.getCounter() + 1);
-            DataRepository.getInstance(getActivity()).updateSingleCounter(counter);
-        }
-    }
+//    private void resetCounter() {
+//        if(id != -1){
+//            if(counter.getMaxPeriod() < new Date().getTime() - counter.getStartDate())
+//                counter.setMaxPeriod(new Date().getTime() - counter.getStartDate());
+//            counter.setStartDate(new Date().getTime());
+//            counter.setCounter(counter.getCounter() + 1);
+//            DataRepository.getInstance(getActivity()).updateSingleCounter(counter);
+//        }
+//    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -153,8 +153,10 @@ public class CounterFragment extends Fragment {
             public void onChanged(@Nullable CounterEntity counterEntity) {
                 counter = counterEntity;
                 description.setText(counter.getTitle());
-                tvResetCount.setText(String.valueOf(counter.getCounter()));
-                tvResetMax.setText(convertLongToTime(counter.getMaxPeriod()));
+//                tvResetCount.setText(String.valueOf(counter.getCounter()));
+//                tvResetMax.setText(convertLongToTime(counter.getMaxPeriod()));
+                int allDays = (int) ((counter.getEndDate() -  counter.getCreateDate()) / (1000 * 60 * 60 *24));
+                circleProgressBar.setMax(allDays);
                 setTimer();
             }
         });
@@ -162,24 +164,14 @@ public class CounterFragment extends Fragment {
 
     private void setTimer() {
         Date timePassed = new Date();
-        timePassed.setTime(new Date().getTime() - counter.getStartDate());
+        timePassed.setTime(new Date().getTime() - counter.getCreateDate());
 
         long time = timePassed.getTime() / 1000;
 
         long d = time / (3600 * 24);
-        long h = (time - (d * (3600 * 24))) / (3600);
-        long m = (time - (d * (3600 * 24)) - (h * 3600)) / (60);
-        long s =  (time - d * (3600 * 24) -  h * 3600 - m  * 60);
-
+        int daysPassed = (int) timePassed.getTime() / (1000 * 60 * 60 *24);
         days.setText(d + " " + getResources().getQuantityString(R.plurals.days, (int) d));
-        hoursMinsSecs.setText(
-                timeFormat(h) + ":" +
-                        timeFormat(m) + ":" +
-                        timeFormat(s));
-        if(previousProgress != h * 60 + m) {
-            previousProgress = h * 60 + m;
-            circleProgressBar.setProgress(previousProgress);
-        }
+        circleProgressBar.setProgress(daysPassed);
 
     }
 

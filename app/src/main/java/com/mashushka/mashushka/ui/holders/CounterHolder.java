@@ -1,14 +1,10 @@
 package com.mashushka.mashushka.ui.holders;
 
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mashushka.mashushka.R;
-import com.mashushka.mashushka.data.Counter;
 import com.mashushka.mashushka.data.entity.CounterEntity;
 import com.mashushka.mashushka.ui.CircleProgressBar;
 import com.mashushka.mashushka.ui.holders.base.BaseViewHolder;
@@ -41,32 +37,33 @@ public class CounterHolder extends BaseViewHolder<CounterEntity>{
     public void bind(CounterEntity data) {
         if(title != null)
         title.setText(data.getTitle());
+        int allDays;
+
+        allDays = (int) ((data.getEndDate() -  data.getCreateDate()) / (1000 * 60 * 60 *24));
 
         Date createTime = new Date();
         Date now = new Date();
         SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy");
-        createTime.setTime(data.getStartDate());
+        createTime.setTime(data.getCreateDate());
 
         Date timePassed = new Date();
         timePassed.setTime(now.getTime() - createTime.getTime());
 
+        int daysPassed = (int) timePassed.getTime() / (1000 * 60 * 60 *24);
+
         long time = timePassed.getTime() / 1000;
 
-        long seconds;
-        long minutes;
-        long hours;
         long days;
 
+        progress.setMax(allDays);
+        progress.setProgress(daysPassed);
+
         days = time / (3600 * 24);
-        hours = (time - (days * (3600 * 24))) / (3600);
-//        minutes = (time - (days * (3600 * 24)) - (hours * 3600)) / (60);
-//        seconds =  (time - days * (3600 * 24) -  hours * 3600 - minutes  * 60);
 
         createDate.setText(format.format(createTime));
-        counter.setText(String.valueOf(days)/* + " " + hours + " " + minutes + " " + seconds*/);
+        counter.setText(String.valueOf(days));
 
         daysTitle.setText(daysTitle.getContext().getResources().getQuantityText(R.plurals.days, (int) days));
-        progress.setProgress(hours);
         wrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

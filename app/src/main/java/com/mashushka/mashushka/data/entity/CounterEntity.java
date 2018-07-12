@@ -4,6 +4,10 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.mashushka.mashushka.data.Comment;
+
+import java.util.List;
+
 /**
  * Created by Михаил on 12.03.2018.
  */
@@ -13,21 +17,26 @@ public class CounterEntity {
     public int id;
     @ColumnInfo(name = "title")
     String title;
-    @ColumnInfo(name = "startDate")
-    long startDate;
     @ColumnInfo(name = "createDate")
     long createDate;
-    @ColumnInfo(name = "counter")
-    long counter;
-    @ColumnInfo(name = "maxPeriod")
-    long maxPeriod;
+    @ColumnInfo(name = "endDate")
+    long endDate;
+    @ColumnInfo(name = "comments")
+    List<Comment> comments;
 
-    public CounterEntity (String title, long startDate, long createDate, long counter, long maxPeriod) {
+
+    public CounterEntity (String title, long createDate, long endDate) {
         this.title = title;
-        this.startDate = startDate;
         this.createDate = createDate;
-        this.counter = counter;
-        this.maxPeriod = maxPeriod;
+        this.endDate = endDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 
     public String getTitle() {
@@ -38,14 +47,6 @@ public class CounterEntity {
         this.title = title;
     }
 
-    public long getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(long startDate) {
-        this.startDate = startDate;
-    }
-
     public long getCreateDate() {
         return createDate;
     }
@@ -54,19 +55,16 @@ public class CounterEntity {
         this.createDate = createDate;
     }
 
-    public long getCounter() {
-        return counter;
+    public long getEndDate() {
+        return endDate;
     }
 
-    public void setCounter(long counter) {
-        this.counter = counter;
+    public void setEndDate(long endDate) {
+        this.endDate = endDate;
     }
 
-    public long getMaxPeriod() {
-        return maxPeriod;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
-    public void setMaxPeriod(long maxPeriod) {
-        this.maxPeriod = maxPeriod;
-    }
 }
