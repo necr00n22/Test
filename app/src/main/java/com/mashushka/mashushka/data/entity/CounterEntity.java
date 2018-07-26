@@ -4,7 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.mashushka.mashushka.data.Comment;
+import com.mashushka.mashushka.data.Block;
 
 import java.util.List;
 
@@ -21,22 +21,19 @@ public class CounterEntity {
     long createDate;
     @ColumnInfo(name = "endDate")
     long endDate;
-    @ColumnInfo(name = "comments")
-    List<Comment> comments;
+    @ColumnInfo(name = "blocks")
+    List<Block> blocks;
 
 
-    public CounterEntity (String title, long createDate, long endDate) {
+    public CounterEntity (String title, long createDate, long endDate, List<Block> blocks) {
         this.title = title;
         this.createDate = createDate;
         this.endDate = endDate;
+        this.blocks = blocks;
     }
 
     public int getId() {
         return id;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
     }
 
     public String getTitle() {
@@ -63,8 +60,13 @@ public class CounterEntity {
         this.endDate = endDate;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public List<Block> getBlocks() {
+        return blocks;
     }
+
+    public void setBlocks(List<Block> blocks) {
+        this.blocks = blocks;
+    }
+
 
 }

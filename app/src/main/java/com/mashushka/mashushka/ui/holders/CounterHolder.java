@@ -58,12 +58,12 @@ public class CounterHolder extends BaseViewHolder<CounterEntity>{
         progress.setMax(allDays);
         progress.setProgress(daysPassed);
 
-        days = time / (3600 * 24);
+        days = time / (3600 * 24) + 1;
 
         createDate.setText(format.format(createTime));
         counter.setText(String.valueOf(days));
 
-        daysTitle.setText(daysTitle.getContext().getResources().getQuantityText(R.plurals.days, (int) days));
+        daysTitle.setText(itemView.getResources().getString(R.string.day));
         wrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

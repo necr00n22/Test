@@ -1,21 +1,17 @@
 package com.mashushka.mashushka.ui.activities;
 
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.mashushka.mashushka.R;
-import com.mashushka.mashushka.data.Counter;
 import com.mashushka.mashushka.ui.fragments.CounterFragment;
 import com.mashushka.mashushka.ui.fragments.ListFragment;
 import com.mashushka.mashushka.ui.listeners.CounterOpener;
-import com.mashushka.mashushka.ui.listeners.OnCounterCreatedListener;
 
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements
-        OnCounterCreatedListener,
         CounterOpener{
 
     private android.support.v4.app.FragmentManager mFragmentManager;
@@ -35,11 +31,6 @@ public class MainActivity extends AppCompatActivity implements
         mFragmentManager.beginTransaction()
                 .replace(R.id.container, ListFragment.newInstance())
                 .commit();
-    }
-
-    @Override
-    public void onCounterCreated(Counter counter) {
-        onBackPressed();
     }
 
     @Override

@@ -5,6 +5,4 @@ package com.mashushka.mashushka;
  */
 
 public class Constants {
-    public static final String DB_NAME = "mashushka.db";
-    public static final int DB_VERSION = 1;
 }

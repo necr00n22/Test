@@ -4,105 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     tools:context="com.mashushka.mashushka.ui.fragments.CounterFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <RelativeLayout
-        android:id="@+id/rl_counter"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="false"
-        android:layout_margin="32dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/days"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="false"
-                android:layout_centerInParent="false"
-                android:paddingBottom="16dp"
-                android:paddingTop="16dp"
-                android:textAlignment="center"
-                android:textColor="@color/blackText"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/hours_mins_secs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/days"
-                android:textAlignment="center" />
-        </LinearLayout>
-
-        <com.mashushka.mashushka.ui.CircleProgressBar
-            android:id="@+id/custom_progressBar"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerHorizontal="true"
-            app:max="1440"
-            app:min="0"
-            app:progress="0"
-            app:progressBarThickness="3dp" />
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/description"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/reset_max"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp" />
-
-    <TextView
-        android:id="@+id/reset_counter_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_counter"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/reset_count_title"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/tv_reset_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/reset_counter_title"
-        android:layout_alignParentRight="true"
-        android:layout_alignWithParentIfMissing="false"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/reset_max"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/reset_counter_title"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/reset_max_title"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/tv_reset_max"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/reset_max"
-        android:layout_alignParentRight="true"
-        android:layout_alignWithParentIfMissing="false"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
-
+        android:layout_height="match_parent" />
 </RelativeLayout>

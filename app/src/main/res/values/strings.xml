@@ -34,4 +34,10 @@
     <string name="reset_count_title">Количество сбросов</string>
     <string name="reset_last_date_title">Последний сброс</string>
     <string name="reset_max_title">Рекорд</string>
+
+    <!--Counter block label-->
+    <string name="block_label_description">Описание</string>
+
+    <string name="day">День</string>
+    <string name="days_left">Осталось</string>
 </resources>

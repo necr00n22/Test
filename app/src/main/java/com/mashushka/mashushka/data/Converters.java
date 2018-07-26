@@ -17,12 +17,12 @@ import java.util.List;
 public class Converters {
 
     @TypeConverter
-    public static long toLong(Date date) {
+    public static long fromDate(Date date) {
         return date == null ? null : date.getTime();
     }
 
     @TypeConverter
-    public static Date toDate(Long time) {
+    public static Date fromLong(Long time) {
         return time == null ? null : new Date(time);
     }
 
@@ -33,6 +33,16 @@ public class Converters {
 
     @TypeConverter
     public static String commentsListToString(List<Comment> data) {
+        return data == null ? null : new Gson().toJson(data);
+    }
+
+    @TypeConverter
+    public static List<Block> fromString(String data) {
+        return data == null ? null : new Gson().fromJson(data, new TypeToken<List<Block>>() {}.getType());
+    }
+
+    @TypeConverter
+    public static String fromBlockList(List<Block> data) {
         return data == null ? null : new Gson().toJson(data);
     }
 

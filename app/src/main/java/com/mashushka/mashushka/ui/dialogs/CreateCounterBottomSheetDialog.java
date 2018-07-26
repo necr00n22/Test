@@ -9,16 +9,18 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.gson.JsonArray;
 import com.mashushka.mashushka.R;
+import com.mashushka.mashushka.data.Block;
+import com.mashushka.mashushka.data.Type;
 import com.mashushka.mashushka.data.entity.CounterEntity;
 import com.mashushka.mashushka.database.DataRepository;
 
-import org.w3c.dom.Text;
-
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,7 +93,18 @@ public class CreateCounterBottomSheetDialog extends BottomSheetDialogFragment {
         endDate.setTime(new Date());
         endDate.add(Calendar.HOUR, days * 24);
 
-        CounterEntity counter = new CounterEntity(title, createDate.getTimeInMillis(), endDate.getTimeInMillis());
+        List<Block> blocks = new ArrayList<>();
+
+        Block.Builder counterBlock = new Block.Builder("", Type.Counter)
+                .setStartDate(createDate.getTimeInMillis())
+                .setEndDate(endDate.getTimeInMillis());
+        blocks.add(counterBlock.build());
+
+        Block.Builder descriptionBlock = new Block.Builder(getString(R.string.block_label_description), Type.SimpleText)
+                .setDescription(title);
+        blocks.add(descriptionBlock.build());
+
+        CounterEntity counter = new CounterEntity(title, createDate.getTimeInMillis(), endDate.getTimeInMillis(), blocks);
         DataRepository.getInstance(getActivity()).insertSingleCounter(counter);
         dismiss();
     }

@@ -17,7 +17,7 @@ public class CounterViewModel extends AndroidViewModel {
 
     private Context mContext;
 
-    public CounterViewModel(@NonNull Application application) {
+    public CounterViewModel(@NonNull Application application ) {
         super(application);
         this.mContext = application;
     }
