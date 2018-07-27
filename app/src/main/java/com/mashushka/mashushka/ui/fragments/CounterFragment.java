@@ -2,6 +2,8 @@ package com.mashushka.mashushka.ui.fragments;
 
 
 import android.app.AlertDialog;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
@@ -19,16 +21,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mashushka.mashushka.R;
+import com.mashushka.mashushka.data.Block;
+import com.mashushka.mashushka.data.entity.CommentEntity;
 import com.mashushka.mashushka.data.entity.CounterEntity;
 import com.mashushka.mashushka.database.DataRepository;
 import com.mashushka.mashushka.ui.CircleProgressBar;
+import com.mashushka.mashushka.ui.CommentsProvider;
 import com.mashushka.mashushka.ui.adapters.CounterAdapter;
 import com.mashushka.mashushka.viewmodel.CounterViewModel;
+import com.mashushka.mashushka.viewmodel.CounterViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +47,7 @@ import butterknife.ButterKnife;
  * Use the {@link CounterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CounterFragment extends Fragment {
+public class CounterFragment extends Fragment implements CommentsProvider{
 
     private static final String ID = "id";
 
@@ -48,6 +57,7 @@ public class CounterFragment extends Fragment {
     private CounterViewModel mCountersListViewModel;
     private long id = -1;
     private CounterAdapter adapter;
+    private CounterEntity counter;
 
     public CounterFragment() {
         // Required empty public constructor
@@ -110,15 +120,19 @@ public class CounterFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Bundle bundle = getArguments();
         id = bundle.getLong(ID, -1L);
+        CounterViewModelFactory factory = new CounterViewModelFactory(getActivity().getApplication(), id);
+        mCountersListViewModel = ViewModelProviders.of(this,factory).get(CounterViewModel.class);
+
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        adapter = new CounterAdapter(getContext(), new ArrayList<>());
+        adapter = new CounterAdapter(getContext(), new ArrayList<Block>(), this);
         list.setLayoutManager(llm);
         list.setAdapter(adapter);
 
-        mCountersListViewModel = ViewModelProviders.of(this).get(CounterViewModel.class);
-        mCountersListViewModel.getCounterById(id).observe(this, new Observer<CounterEntity>() {
+
+        mCountersListViewModel.getCounter().observe(this, new Observer<CounterEntity>() {
             @Override
             public void onChanged(@Nullable CounterEntity counterEntity) {
+                counter = counterEntity;
                 adapter.setItems(counterEntity.getBlocks());
             }
         });
@@ -141,5 +155,24 @@ public class CounterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_counter, container, false);
         ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public LiveData<List<CommentEntity>> getComments() {
+        return mCountersListViewModel.getComments();
+    }
+
+    @Override
+    public void addComment(CommentEntity comment) {
+        comment.setCounterCreatedDate(new Date(counter.getCreateDate()));
+        comment.setCounterId(counter.getId());
+        comment.setCreatedDate(new Date());
+
+        DataRepository.getInstance(getContext()).insertSingleComment(comment);
+    }
+
+    @Override
+    public LifecycleOwner getLyfecycleOwner() {
+        return this;
     }
 }

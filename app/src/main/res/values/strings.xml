@@ -37,7 +37,10 @@
 
     <!--Counter block label-->
     <string name="block_label_description">Описание</string>
+    <string name="block_label_comments">Заметки</string>
 
     <string name="day">День</string>
     <string name="days_left">Осталось</string>
+    <string name="done">Готово</string>
+
 </resources>

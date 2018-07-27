@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import com.mashushka.mashushka.R;
 import com.mashushka.mashushka.data.Block;
+import com.mashushka.mashushka.ui.CommentsProvider;
+import com.mashushka.mashushka.ui.holders.CounterCommentsHolder;
 import com.mashushka.mashushka.ui.holders.CounterProgressHolder;
 import com.mashushka.mashushka.ui.holders.CounterTextHolder;
 import com.mashushka.mashushka.ui.holders.base.BaseViewHolder;
@@ -24,19 +26,24 @@ public class CounterAdapter extends RecyclerView.Adapter<BaseViewHolder<Block>> 
     public final static int TYPE_TEXT = 0;
     public final static int TYPE_COUNTER = 1;
     public final static int TYPE_NUMBER = 2;
+    public final static int TYPE_COMMENTS = 3;
 
     private Context context;
     private List<Block> mItems;
+    private CommentsProvider commentsProvider;
 
-    public CounterAdapter(Context context, ArrayList<Block> mItems) {
+    public CounterAdapter(Context context, ArrayList<Block> mItems, CommentsProvider commentsProvider) {
         this.context = context;
         this.mItems = mItems;
+        this.commentsProvider = commentsProvider;
     }
 
     @NonNull
     @Override
     public BaseViewHolder<Block> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
+            case TYPE_COMMENTS:
+                return new CounterCommentsHolder(LayoutInflater.from(context).inflate(R.layout.counter_item_comments_list, parent, false), commentsProvider);
             case TYPE_COUNTER:
                 return new CounterProgressHolder(LayoutInflater.from(context).inflate(R.layout.counter_item_progress, parent, false));
             case TYPE_TEXT:
@@ -63,6 +70,8 @@ public class CounterAdapter extends RecyclerView.Adapter<BaseViewHolder<Block>> 
     @Override
     public int getItemViewType(int position) {
         switch (mItems.get(position).getType()) {
+            case Comments:
+                return TYPE_COMMENTS;
             case Counter:
                 return TYPE_COUNTER;
             case SimpleText:

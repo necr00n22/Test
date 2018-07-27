@@ -1,6 +1,7 @@
 package com.mashushka.mashushka.data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Mikhail Li (Jiub) on 25.07.2018.

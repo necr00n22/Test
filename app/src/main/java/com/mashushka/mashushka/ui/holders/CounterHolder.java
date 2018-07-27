@@ -27,6 +27,7 @@ public class CounterHolder extends BaseViewHolder<CounterEntity>{
     @BindView(R.id.create_date) TextView createDate;
     @BindView(R.id.tv_days_title) TextView daysTitle;
     @BindView(R.id.custom_progressBar) CircleProgressBar progress;
+    @BindView(R.id.title) TextView title;
 
     public CounterHolder (View itemView, CounterOpener listener) {
         super(itemView);

@@ -14,8 +14,6 @@ import butterknife.Unbinder;
  */
 
 public abstract class BaseViewHolder<H> extends RecyclerView.ViewHolder {
-    @Nullable
-    @BindView(android.R.id.title) protected TextView title;
 
     public BaseViewHolder(View itemView) {
         super(itemView);

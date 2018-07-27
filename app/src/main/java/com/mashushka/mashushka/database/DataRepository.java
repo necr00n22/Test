@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.content.Context;
 
+import com.mashushka.mashushka.data.entity.CommentEntity;
 import com.mashushka.mashushka.data.entity.CounterEntity;
 
 import java.util.List;
@@ -52,6 +53,17 @@ public class DataRepository {
 
     public LiveData<CounterEntity> getCounterById(long id) {
         return mDatabase.counterDao().getCounterById(id);
+    }
+
+    public LiveData<List<CommentEntity>> getCommentsById(long counterId) {
+        return mDatabase.commentDao().getCommentsByCounterId(counterId);
+    }
+
+    public void insertSingleComment(CommentEntity entity) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            mDatabase.runInTransaction(() -> mDatabase.commentDao().insertSingleComment(entity));
+
+        });
     }
 
     public void updateSingleCounter(CounterEntity entity) {

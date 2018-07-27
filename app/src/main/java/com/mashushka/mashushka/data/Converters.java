@@ -1,11 +1,10 @@
 package com.mashushka.mashushka.data;
 
 import android.arch.persistence.room.TypeConverter;
-import android.support.v4.content.res.TypedArrayUtils;
-import android.util.TypedValue;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mashushka.mashushka.data.entity.CommentEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -27,12 +26,12 @@ public class Converters {
     }
 
     @TypeConverter
-    public static List<Comment> stringToCommentsList(String data) {
-        return data == null ? null : new Gson().fromJson(data, new TypeToken<List<Comment>>() {}.getType());
+    public static List<CommentEntity> stringToCommentsList(String data) {
+        return data == null ? null : new Gson().fromJson(data, new TypeToken<List<CommentEntity>>() {}.getType());
     }
 
     @TypeConverter
-    public static String commentsListToString(List<Comment> data) {
+    public static String commentsListToString(List<CommentEntity> data) {
         return data == null ? null : new Gson().toJson(data);
     }
 

@@ -104,6 +104,11 @@ public class CreateCounterBottomSheetDialog extends BottomSheetDialogFragment {
                 .setDescription(title);
         blocks.add(descriptionBlock.build());
 
+        Block.Builder commentsBlock = new Block.Builder(getString(R.string.block_label_comments), Type.Comments)
+                .setStartDate(createDate.getTimeInMillis());
+        blocks.add(commentsBlock.build());
+
+
         CounterEntity counter = new CounterEntity(title, createDate.getTimeInMillis(), endDate.getTimeInMillis(), blocks);
         DataRepository.getInstance(getActivity()).insertSingleCounter(counter);
         dismiss();

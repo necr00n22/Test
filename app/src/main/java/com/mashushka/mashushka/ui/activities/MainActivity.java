@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setTitle(getString(R.string.app_name));
-
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction()
                 .replace(R.id.container, ListFragment.newInstance())

@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mashushka.mashushka.R;
+import com.mashushka.mashushka.Utils;
 import com.mashushka.mashushka.data.Block;
 import com.mashushka.mashushka.ui.CircleProgressBar;
 import com.mashushka.mashushka.ui.holders.base.BaseViewHolder;
@@ -33,15 +34,10 @@ public class CounterProgressHolder extends BaseViewHolder<Block> {
     @Override
     public void bind(Block data) {
         if(data.getStartDate() != -1L && data.getEndDate() != -1L) {
-            Date timePassed = new Date();
-            timePassed.setTime(new Date().getTime() - data.getStartDate());
-            Date timeLeft = new Date();
-            timeLeft = new Date (data.getEndDate() - timeLeft.getTime());
-            long dPassed = timePassed.getTime() / (3600 * 24 * 1000) + 1;
-            long dLeft = timeLeft.getTime() / (3600 * 24 * 1000);
-            int daysPassed = (int) timePassed.getTime() / (1000 * 60 * 60 *24);
-            daysPast.setText(String.format(Locale.getDefault() ,"%s %d", itemView.getResources().getString(R.string.day), dPassed));
-            daysLeft.setText(String.format(Locale.getDefault() ,"%s %d %s", itemView.getResources().getString(R.string.days_left), dLeft, itemView.getResources().getQuantityString(R.plurals.days, (int) dLeft)));
+            Date timePassed = new Date(new Date().getTime() - data.getStartDate());
+            int daysPassed = (int) timePassed.getTime() / (1000 * 60 * 60 * 24);
+            daysPast.setText(Utils.DateUtils.daysPassedString(itemView.getContext(), data.getStartDate(), new Date().getTime()));
+            daysLeft.setText(Utils.DateUtils.daysLeftString(itemView.getContext(),data.getEndDate(), new Date().getTime()));
             progress.setProgress(daysPassed);
         }
     }

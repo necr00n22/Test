@@ -11,14 +11,16 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.mashushka.mashushka.data.Converters;
+import com.mashushka.mashushka.data.dao.CommentDao;
 import com.mashushka.mashushka.data.dao.CounterDao;
+import com.mashushka.mashushka.data.entity.CommentEntity;
 import com.mashushka.mashushka.data.entity.CounterEntity;
 
 /**
  * Created by Михаил on 12.03.2018.
  */
 
-@Database(entities = {CounterEntity.class}, version = 5)
+@Database(entities = {CounterEntity.class, CommentEntity.class}, version = 7)
 @TypeConverters(Converters.class)
 public abstract class RoomDB extends RoomDatabase {
 
@@ -27,6 +29,7 @@ public abstract class RoomDB extends RoomDatabase {
     public static final String DATABASE_NAME = "basic-sample-db";
 
     public abstract CounterDao counterDao();
+    public abstract CommentDao commentDao();
 
     private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
 
