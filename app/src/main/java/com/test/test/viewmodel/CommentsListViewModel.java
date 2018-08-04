@@ -6,7 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.test.test.data.entity.CommentEntity;
-import com.test.test.database.CommentRepository;
+import com.test.test.database.repositories.CommentRepository;
 import com.test.test.di.App;
 
 import java.util.List;

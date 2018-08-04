@@ -1,8 +1,9 @@
-package com.test.test.database;
+package com.test.test.database.repositories;
 
 import android.arch.lifecycle.LiveData;
 
 import com.test.test.data.entity.CommentEntity;
+import com.test.test.database.RoomDB;
 
 import java.util.List;
 import java.util.concurrent.Executors;

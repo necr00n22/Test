@@ -5,5 +5,5 @@ package com.test.test.ui.listeners;
  */
 
 public interface CounterOpener {
-    public void showCounter(long id);
+    void showCounter(long id);
 }

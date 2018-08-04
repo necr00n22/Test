@@ -4,8 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.test.test.database.AppExecutors;
-import com.test.test.database.CommentRepository;
-import com.test.test.database.CounterRepository;
+import com.test.test.database.repositories.CommentRepository;
+import com.test.test.database.repositories.CounterRepository;
 import com.test.test.database.RoomDB;
 
 import javax.inject.Singleton;

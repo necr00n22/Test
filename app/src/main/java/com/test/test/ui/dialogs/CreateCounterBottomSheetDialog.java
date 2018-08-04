@@ -14,7 +14,7 @@ import com.test.test.R;
 import com.test.test.data.Block;
 import com.test.test.data.Type;
 import com.test.test.data.entity.CounterEntity;
-import com.test.test.database.CounterRepository;
+import com.test.test.database.repositories.CounterRepository;
 import com.test.test.di.App;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.test.test.data.entity.CounterEntity;
-import com.test.test.database.CounterRepository;
+import com.test.test.database.repositories.CounterRepository;
 import com.test.test.di.App;
 
 import java.util.List;
