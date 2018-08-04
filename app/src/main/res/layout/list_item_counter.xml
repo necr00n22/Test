@@ -46,7 +46,7 @@
 
         </LinearLayout>
 
-        <com.mashushka.mashushka.ui.CircleProgressBar
+        <com.test.test.ui.CircleProgressBar
             android:id="@+id/custom_progressBar"
             android:layout_width="60dp"
             android:layout_height="60dp"

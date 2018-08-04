@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.mashushka.mashushka.ui.fragments.ListFragment">
+    tools:context="com.test.test.com.mashushka.test.ui.fragments.ListFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
